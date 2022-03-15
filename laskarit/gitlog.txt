@@ -1,0 +1,96 @@
+seppaemi@melkki:~/ot_viikko1/tiedostoja$ git log --stat | cat
+commit c8005dfdf1f08678da73907d6a9f6fbff1c90b51
+Author: Seppälä Emilia A <seppaemi@melkki.cs.helsinki.fi>
+Date:   Tue Mar 15 21:05:19 2022 +0200
+
+    :)
+
+ tiedostoja/file2.txt                 | 0
+ tiedostoja/{file1.txt => file22.txt} | 0
+ 2 files changed, 0 insertions(+), 0 deletions(-)
+
+commit 79c67d3b0f8ea196fdec0febff859a1ddb6f5336
+Author: Seppälä Emilia A <seppaemi@melkki.cs.helsinki.fi>
+Date:   Tue Mar 15 20:58:52 2022 +0200
+
+    :)
+
+ tiedostoja/file1.txt | 0
+ tiedostoja/file2.txt | 0
+ tiedostoja/file3.txt | 0
+ 3 files changed, 0 insertions(+), 0 deletions(-)
+
+commit b01a675ed2887e1628a9949d61451bb85bbaf4f4
+Author: Seppälä Emilia A <seppaemi@melkki.cs.helsinki.fi>
+Date:   Tue Mar 15 15:50:46 2022 +0200
+
+    yes
+
+ eka.txt    | 2 ++
+ kolmas.txt | 1 +
+ 2 files changed, 3 insertions(+)
+
+commit 38da59159528f2bb3d66f229d731e1948a89c4f1
+Author: Seppälä Emilia A <seppaemi@melkki.cs.helsinki.fi>
+Date:   Tue Mar 15 15:40:38 2022 +0200
+
+    ok
+
+ tiedosto.txt => eka.txt | 0
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
+commit f8117c6821094807ed47c9265b7eefcf29302cc4
+Author: Seppälä Emilia A <seppaemi@melkki.cs.helsinki.fi>
+Date:   Tue Mar 15 15:39:35 2022 +0200
+
+    ok
+															
+ toinen.txt | 1 -
+ 1 file changed, 1 deletion(-)
+
+commit 18bbdfa766c25503bd72a4f0a485fb9f0b1609d7
+Author: Seppälä Emilia A <seppaemi@melkki.cs.helsinki.fi>
+Date:   Tue Mar 15 15:33:54 2022 +0200
+
+    change
+
+ stuff/joku_tiedosto.txt | 0
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
+commit 04e7ec8cf45f4349644ab71c8021938a703207d6
+Author: Seppälä Emilia A <seppaemi@melkki.cs.helsinki.fi>
+Date:   Tue Mar 15 15:31:23 2022 +0200
+
+   change
+
+ kolmas.txt | 1 +
+ toinen.txt | 1 +
+ 2 files changed, 2 insertions(+)
+
+commit 2a3c735b4b50cc65d0b74695d666189ff4f52d32
+Author: Seppälä Emilia A <seppaemi@melkki.cs.helsinki.fi>
+Date:   Tue Mar 15 15:27:05 2022 +0200
+
+    lisätty <3
+
+ kolmas.txt | 0
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
+commit 12ac56f8657cb2de4fefd6ffdb2dea9a2a8e041a
+Author: Seppälä Emilia A <seppaemi@melkki.cs.helsinki.fi>
+Date:   Tue Mar 15 15:22:13 2022 +0200
+
+    muutos ja lisäys
+
+ tiedosto.txt | 1 +
+ toinen.txt   | 0
+ 2 files changed, 1 insertion(+)
+
+commit 51ff687eb4ad80903148578fed38d2e608329cd6
+Author: Seppälä Emilia A <seppaemi@melkki.cs.helsinki.fi>
+Date:   Tue Mar 15 15:13:27 2022 +0200
+
+    tiedosto.txt luotu
+
+ tiedosto.txt | 0
+ 1 file changed, 0 insertions(+), 0 deletions(-)
