@@ -1,6 +1,9 @@
 # Ohjlemistotkeniikan harjoitustyö ja sen tehtäviä
-**tänne tulee lisää ajan kuluessa**
+## alkutehtävät
 
 [komentorivi.txt](https://github.com/seppaemi/ot-harjoitustyo/blob/master/laskarit/komentorivi.txt)
 
 [gitlog.txt](https://github.com/seppaemi/ot-harjoitustyo/blob/master/laskarit/gitlog.txt)
+
+## Dokumentaatio
+[vaatimusmäärittely](https://github.com/seppaemi/ot-harjoitustyo/blob/master/dokumentaatio/vaatimusm%C3%A4%C3%A4rittely.md)
