@@ -1,4 +1,4 @@
-# Ohjlemistotkeniikan harjoitustyö ja sen tehtäviä
+# Ohjelmistotkeniikan harjoitustyö ja sen tehtäviä
 ## alkutehtävät
 
 [komentorivi.txt](https://github.com/seppaemi/ot-harjoitustyo/blob/master/laskarit/komentorivi.txt)
