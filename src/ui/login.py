@@ -1,7 +1,8 @@
-from doctest import master
-from tkinter import ttk, StringVar, constants
+from tkinter import Tk, ttk, constants,StringVar
+import matplotlib
+matplotlib.use('Agg')
 
-from numpy import pad
+window = Tk()
 
 class LoginView:
     def __init__(self, root, handlelogin, handlenewuserview):
@@ -27,14 +28,14 @@ class LoginView:
         password=self._password_entry.get()
 
     def _initialize_username_area(self):
-        username_text=ttk.Label(master=self._frame, text='Username')
+        username_text=ttk.Label(master=self._frame, text='Username', foreground='white', background='black')
         self._username_entry=ttk.Entry(master=self._frame)
 
         username_text.grid(padx=10, pady=10, sticky=constants.W)
         self._username_entry.grid(padx=10, pady=10, sticky=constants.EW)
 
     def _initialize_password_area(self):
-        password_text=ttk.Label(master=self, text='Password')
+        password_text=ttk.Label(master=self, text='Password', foreground='white', background='black')
         self._password_entry=ttk.Entry(master=self._frame)
 
         password_text.grid(padx=10, pady=10, sticky=constants.W)
@@ -55,3 +56,12 @@ class LoginView:
         self._frame.grid_columnconfigure(0,weight=1, minsize=500)
         login_button.grid(padx=10, pady=10, sticky=constants.EW)
         new_user_button.grid(padx=10, pady=10, sticky=constants.EW)
+
+        self._hide_error()
+
+
+window.title("Login")
+ui = LoginView(window)
+ui.start()
+
+window.mainloop()
