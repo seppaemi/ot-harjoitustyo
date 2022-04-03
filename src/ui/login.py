@@ -1,7 +1,5 @@
-
-from tkinter import font, ttk, StringVar, constants
+from tkinter import ttk, constants
 from tkinter import Tk
-from turtle import bgcolor
 window=Tk()
 window.title("Login")
 
