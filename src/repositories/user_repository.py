@@ -1,4 +1,4 @@
-from entities.user import User
+import entities
 import sqlite3
 
 class UserRepository:
