@@ -1,5 +1,5 @@
-from entities.user import User
 import sqlite3
+from entities.users import User
 
 class UserRepository:
     def __init__(self, name):
@@ -8,24 +8,26 @@ class UserRepository:
 
     def create_table(self):
         self.db.execute("begin")
-        self.db.execute("create table users1 (id integer primary key, name text, password text)")
+        self.db.execute("create table users (id integer primary key, name text, password text)")
         self.db.execute("commit")
 
-    def create_user(self, user: User):
+    def create_user(self, users: User):
         self.db.execute("begin")
-        self.db.execute("insert into users1 (name, password) values (?,?)", [user.username, user.password])
+        self.db.execute("insert into users (name, password) values (?,?)", [users.username, users.password])
         self.db.execute("commit")
-        return user
+        return users
 
     def find_users(self):
         self.db.execute("begin")
-        all_users=self.db.execute("select * from users1").fetchall()
+        all_users=self.db.execute("select * from users").fetchall()
         self.db.execute("commit")
         return all_users
 
     def delete_table(self):
         self.db.execute("begin")
-        self.db.execute("drop table users1")
+        self.db.execute("drop table users")
         self.db.execute("commit")
-user_repository=UserRepository()
 
+if __name__ == "__main__":
+    u = UserRepository()
+    u.create_table()

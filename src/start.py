@@ -1,5 +1,4 @@
-
 from repositories.user_repository import UserRepository
 
-u = UserRepository("users.db")
-u.create_table()
+table = UserRepository("users.db")
+table.create_table()
