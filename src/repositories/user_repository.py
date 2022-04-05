@@ -1,4 +1,4 @@
-import entities
+from entities.user import User
 import sqlite3
 
 class UserRepository:
@@ -27,7 +27,5 @@ class UserRepository:
         self.db.execute("begin")
         self.db.execute("drop table users1")
         self.db.execute("commit")
+user_repository=UserRepository()
 
-if __name__ == "__main__":
-    u = UserRepository()
-    u.create_table()
