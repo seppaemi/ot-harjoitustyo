@@ -1,37 +1,33 @@
 from entities.user import User
-from src.database_connection import get_database_connection
-
-
-def get_user_by_row(row):
-    return User(row['username'], row['password']) if row else None
-
+import sqlite3
 
 class UserRepository:
-    def __init__(self, connection):
-        self._connection = connection
+    def __init__(self, name):
+        self.db = sqlite3.connect(name)
+        self.db.isolation_level = None
 
-    def find_all(self):
-        cursor = self._connection.cursor()
-        cursor.execute('select * from users')
-        rows = cursor.fetchall()
-        return list(map(get_user_by_row, rows))
+    def create_table(self):
+        self.db.execute("begin")
+        self.db.execute("create table users1 (id integer primary key, name text, password text)")
+        self.db.execute("commit")
 
-    def find_by_username(self, username):
-        cursor = self._connection.cursor()
-        cursor.execute('select * from users where username = ?',(username,))
-        row = cursor.fetchone()
-        return get_user_by_row(row)
-
-    def create(self, user:User):
-        cursor = self._connection.cursor()
-        cursor.execute('insert into users (username, password) values (?, ?)',(user.username, user.password))
-        self._connection.commit()
+    def create_user(self, user: User):
+        self.db.execute("begin")
+        self.db.execute("insert into users1 (name, password) values (?,?)", [user.username, user.password])
+        self.db.execute("commit")
         return user
 
-    def delete_all(self):
-        cursor = self._connection.cursor()
-        cursor.execute('delete from users')
-        self._connection.commit()
+    def find_users(self):
+        self.db.execute("begin")
+        all_users=self.db.execute("select * from users1").fetchall()
+        self.db.execute("commit")
+        return all_users
 
+    def delete_table(self):
+        self.db.execute("begin")
+        self.db.execute("drop table users1")
+        self.db.execute("commit")
 
-user_repository = UserRepository(get_database_connection())
+if __name__ == "__main__":
+    u = UserRepository()
+    u.create_table()
