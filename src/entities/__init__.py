@@ -1,2 +1,2 @@
-from entities.user import User
-from entities.item import Item
+from user import User
+from item import Item
