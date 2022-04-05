@@ -1,2 +1,0 @@
-from user_repository import UserRepository
-from item_repository import Item

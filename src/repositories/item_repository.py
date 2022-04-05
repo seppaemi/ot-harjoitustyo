@@ -1,8 +1,6 @@
 from entities.item import Item
 from entities.user import User
 from database_connection import get_db_connection
-
-
 def get_id_by_row(row):
     return row['id'] if row else None
 
