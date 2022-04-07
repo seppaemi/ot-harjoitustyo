@@ -5,29 +5,37 @@ class UserRepository:
     def __init__(self, name):
         self.db = sqlite3.connect(name)
         self.db.isolation_level = None
+        self.name = name
 
     def create_table(self):
         self.db.execute("begin")
-        self.db.execute("create table users2 (id integer primary key, name text, password text)")
+        self.db.execute("create table users (id integer primary key, name text, password text)")
         self.db.execute("commit")
 
-    def create_user(self, users2: User):
+    def create_user(self, user: User):
         self.db.execute("begin")
-        self.db.execute("insert into users2 (name, password) values (?,?)", [users2.username, users2.password])
+        self.db.execute("insert into users (name, password) values (?,?)",[user.username, user.password])
         self.db.execute("commit")
-        return users2
+        return user
 
     def find_users(self):
         self.db.execute("begin")
-        all_users=self.db.execute("select * from users2").fetchall()
+        all_users = self.db.execute("select * from users").fetchall()
         self.db.execute("commit")
         return all_users
 
+    def find_by_username(self, username):
+        self.db.execute("begin")
+        found_user = self.db.execute("select * from users where username = ?", (username,)).fetchone()
+        self.db.execute("commit")
+        return found_user
+
     def delete_table(self):
         self.db.execute("begin")
-        self.db.execute("drop table users2")
+        self.db.execute("drop table users")
         self.db.execute("commit")
 
+
 if __name__ == "__main__":
-    u = UserRepository()
-    u.create_table()
+    U = UserRepository()
+    U.create_table()
