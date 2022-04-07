@@ -41,4 +41,4 @@ class LoginService:
             self._user = user
         return user
 
-service = ReviewService()
+service = LoginService()
