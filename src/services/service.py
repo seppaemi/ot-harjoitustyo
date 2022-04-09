@@ -46,5 +46,32 @@ class Service:
 
     def get_current_user(self):
         return self._user
+##tÄSTÄ ETEENPÄIN EI MITÄÄN HAJUA TOIMIIKO :D
+    
+    def add_item(self, item):
+        user = self.get_current_user()
+        item = Item(item)
+
+        self._item_repository.add_item(item, user)
+        return item
+
+    def delete_item(self, item):
+        user = self.get_current_user()
+        self._item_repository.delete_item(item, user)
+
+    def find_items(self):
+        user = self.get_current_user()
+        items = self._item_repository.find_by_user(user)
+
+        result = []
+        for item in items:
+            result.append(item)
+
+        result.sort()
+        return result
+
+    def delete_all(self):
+        self._user_repository.delete_all()
+        self._item_repository.delete_all()
 
 service = Service()
