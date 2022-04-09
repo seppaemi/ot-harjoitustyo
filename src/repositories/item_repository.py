@@ -20,8 +20,7 @@ class ItemRepository:
 
     def _get_user_id(self, user):
         cursor = self._connection.cursor()
-        row = cursor.execute(
-            "SELECT * FROM Users WHERE username=?", [user.username]).fetchone()
+        row = cursor.execute("SELECT * FROM Users WHERE username=?", [user.username]).fetchone()
         user_id = get_id_by_row(row)
         cursor.close()
 
