@@ -1,5 +1,5 @@
 class Item:
-    def __init__(self, item=str, buy=False, user=None):
+    def __init__(self, item, user, item_id):
         self.item=item
-        self.buy=buy
         self.user=user
+        self.item_id=item_id
