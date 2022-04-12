@@ -7,3 +7,37 @@ Sovelluksen avulla käyttjä voi tallettaa tietoon, mitä hänen tulee ostaa seu
 [työaikakirjanpito](https://github.com/seppaemi/ot-harjoitustyo/blob/master/dokumentaatio/Ty%C3%B6aikakirjanpito.md)
 
 [changelog](https://github.com/seppaemi/ot-harjoitustyo/blob/master/dokumentaatio/changelog.md)
+
+[arkkitehtuuri] (https://github.com/seppaemi/ot-harjoitustyo/blob/master/dokumentaatio/Arkkitehtuuri.md)
+
+
+### **Asennusohjeet**
+
+1. Aloita asentamalla riippuvuudet koneella, ajamalla seuraava komento koneen terminaalissa:
+
+```bash
+poetry install
+```
+
+2. Sovelluksen voit käynnistää ajamalla seuraava komento koneen terminaalissa:
+
+```bash
+poetry run invoke start
+```
+
+### **Testaaminen**
+
+Aloita testaaminen ajamalla seuraava komento koneen terminaalissa:
+
+```bash
+poetry run invoke test
+```
+
+### **Testikattavuus**
+
+Tutki testikattavuutta ajamalla seuraava komento koneen terminaalissa:
+
+```bash
+poetry run invoke coverage-report
+```
+Tämän jälkeen htmlcov-kansiosta löytyy testikattavuusraportti index.html-tiedostosta.
