@@ -10,34 +10,58 @@ Sovelluksen avulla käyttjä voi tallettaa tietoon, mitä hänen tulee ostaa seu
 
 [arkkitehtuuri] (https://github.com/seppaemi/ot-harjoitustyo/blob/master/dokumentaatio/Arkkitehtuuri.md)
 
+## Asennus
 
-### **Asennusohjeet**
-
-1. Aloita asentamalla riippuvuudet koneella, ajamalla seuraava komento koneen terminaalissa:
+1. Asenna riippuvuudet komennolla:
 
 ```bash
 poetry install
 ```
 
-2. Sovelluksen voit käynnistää ajamalla seuraava komento koneen terminaalissa:
+2. Suorita vaadittavat alustustoimenpiteet komennolla:
+
+```bash
+poetry run invoke build
+```
+
+3. Käynnistä sovellus komennolla:
 
 ```bash
 poetry run invoke start
 ```
 
-### **Testaaminen**
+## Komentorivitoiminnot
 
-Aloita testaaminen ajamalla seuraava komento koneen terminaalissa:
+### Ohjelman suorittaminen
+
+Ohjelman pystyy suorittamaan komennolla:
+
+```bash
+poetry run invoke start
+```
+
+### Testaus
+
+Testit suoritetaan komennolla:
 
 ```bash
 poetry run invoke test
 ```
 
-### **Testikattavuus**
+### Testikattavuus
 
-Tutki testikattavuutta ajamalla seuraava komento koneen terminaalissa:
+Testikattavuusraportin voi generoida komennolla:
 
 ```bash
 poetry run invoke coverage-report
 ```
-Tämän jälkeen htmlcov-kansiosta löytyy testikattavuusraportti index.html-tiedostosta.
+
+Raportti generoituu _htmlcov_-hakemistoon.
+
+### Pylint
+
+Tiedoston [.pylintrc](./.pylintrc) määrittelemät tarkistukset voi suorittaa komennolla:
+
+```bash
+poetry run invoke lint
+```
