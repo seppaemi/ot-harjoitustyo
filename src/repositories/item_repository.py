@@ -15,10 +15,16 @@ def get_category_by_row(row):
 
 
 class ItemRepository:
+    """ostoksista vastaava luokka
+    """
     def __init__(self, connection):
+        """luokan konstruktori
+        """
         self._connection = connection
 
     def _get_user_id(self, user):
+        """palauttaa käyttäjän id:n
+        """
         cursor = self._connection.cursor()
         row = cursor.execute("SELECT * FROM Users WHERE username=?", [user.username]).fetchone()
         user_id = get_id_by_row(row)
@@ -27,6 +33,8 @@ class ItemRepository:
         return user_id
 
     def add_item(self, item, user):
+        """lisää tuotteen tietokantaan
+        """
         user_id = self._get_user_id(user)
         cursor = self._connection.cursor()
         cursor.execute("INSERT INTO Items (item, user_id) VALUES (?, ?)",[item.item, user_id])
@@ -38,6 +46,8 @@ class ItemRepository:
         return item
 
     def delete_item(self, item, user):
+        """poistaa tuotteen tietokannasta
+        """
         user_id = self._get_user_id(user)
         cursor = self._connection.cursor()
 
@@ -50,6 +60,9 @@ class ItemRepository:
         cursor.close()
 
     def find_by_user(self, user):
+        """etsii tuotteita tietokannasta 
+        käyttäjän avulla
+        """
         user_id = self._get_user_id(user)
         cursor = self._connection.cursor()
         items = cursor.execute("SELECT * FROM Items WHERE user_id=?", [user_id]).fetchall()
@@ -63,9 +76,11 @@ class ItemRepository:
 
 
     def delete_all(self):
+        """poistaa kaiken
+        """
         cursor = self._connection.cursor()
         cursor.execute("DELETE FROM Items")
         self._connection.commit()
         cursor.close()
 
-recipe_repository = ItemRepository(get_db_connection())
+item_repository = ItemRepository(get_db_connection())
