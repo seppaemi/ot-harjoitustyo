@@ -1,17 +1,21 @@
-
+"""luodaan connection
+"""
 from database_connection import get_db_connection
 
 def drop_tables(connection):
+    """poistaa olemassaolevat taulut"""
     cursor = connection.cursor()
     cursor.execute('''drop table if exists users;''')
     connection.commit()
 
 def create_tables(connection):
+    """luo taulun users"""
     cursor = connection.cursor()
     cursor.execute('''CREATE TABLE users (id INTEGER PRIMARY KEY,username TEXT,password TEXT);''')
     connection.commit()
 
 def initialize_database():
+    """tekee db connectionin"""
     connection = get_db_connection()
     drop_tables(connection)
     create_tables(connection)

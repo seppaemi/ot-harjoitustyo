@@ -1,17 +1,15 @@
-from entities.item import Item
-from entities.user import User
+"""repo kaikille tuotteille, tämä ei toimi vielä :)
+"""
 from database_connection import get_db_connection
-## TÄMÄ EI VIELÄ OLETETTAVASTI TOIMI, KUN EN OLE PÄÄSSYT NÄKEMÄÄN OPERATIONAL ERRORIN TAKIA
-##MUTTA KUNAN KIRJOITTELIN TÄMÄN JA TOIVON ETTÄ SE TOIMII KUN SAAN HOMMAT TAAS TOIMIMAAN
 
 def get_id_by_row(row):
+    """hakee id:n"""
     return row['id'] if row else None
 
 def get_name_by_row(row):
+    """hakee nimen"""
     return row['item'] if row else None
 
-def get_category_by_row(row):
-    return row['category'] if row else None
 
 
 class ItemRepository:
@@ -60,7 +58,7 @@ class ItemRepository:
         cursor.close()
 
     def find_by_user(self, user):
-        """etsii tuotteita tietokannasta 
+        """etsii tuotteita tietokannasta
         käyttäjän avulla
         """
         user_id = self._get_user_id(user)

@@ -1,3 +1,5 @@
+"""entities luokka
+"""
 class Item:
     """ kuvaa luokassa yksittäistä ostosta
     """
@@ -8,3 +10,4 @@ class Item:
         self.item=item
         self.user=user
         self.item_id=item_id
+        

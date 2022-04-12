@@ -1,20 +1,31 @@
+"""ui:n ikkuna tuotteen lisäykseen
+"""
 from tkinter import ttk, constants
 
 class AddItemView:
+    """luokka tuotteen lisäykseen
+    """
     def __init__(self, root, handle_back=None):
+        """alustaa tarvittavat
+        """
         self._root = root
         self._handle_back = handle_back
         self._frame = None
 
         self._initialize()
-        
+
     def pack(self):
+        """alustaa ikkunna
+        """
         self._frame.pack(fill=constants.X)
 
     def destroy(self):
+        """sulkee ikkunan
+        """
         self._frame.destroy()
 
     def _initialize(self):
+        """luo ikkunan"""
         self._frame = ttk.Frame(master=self._root)
         header=ttk.Label(master=self._frame, text="Create user")
         header.grid(columnspan=2, sticky=constants.W, padx=10, pady=10)
@@ -27,5 +38,5 @@ class AddItemView:
 
         button=ttk.Button(master=self._frame, text="Back", command=self._handle_back)
         button.grid(columnspan=2, sticky=(constants.E, constants.W), padx=10, pady=10)
-        
+
         self._frame.grid_columnconfigure(1, weight=1, minsize=300)

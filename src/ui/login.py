@@ -1,26 +1,39 @@
+""" vastaa kirjautumisikkunasta
+"""
 from tkinter import ttk, StringVar, constants
 from services.service import service, InvalidCredentialsError
 
-
 class LoginView:
+    """luokka ikkunalle"""
     def __init__(self, root, handle_login, handle_show_create_user_view):
+        """alustetaan kaikki tarpeellinen
+        """
         self._root = root
         self._handle_login = handle_login
         self._handle_show_create_user_view = handle_show_create_user_view
         self._frame = None
+
         self._username_text = None
         self._password_text = None
+
         self._error_variable = None
         self._error_label = None
+
         self._initialize()
 
     def pack(self):
+        """luo ikkunan
+        """
         self._frame.pack(fill=constants.X)
 
     def destroy(self):
+        """sulkee ikkunan
+        """
         self._frame.destroy()
 
     def _login_handler(self):
+        """näihin voi kirjoittaa
+        """
         username = self._username_text.get()
         password = self._password_text.get()
         try:
@@ -30,13 +43,19 @@ class LoginView:
             self._show_error('Invalid username or password')
 
     def _show_error(self, message):
+        """luo virheilmoiuksen tarvittaessa
+        """
         self._error_variable.set(message)
         self._error_label.grid()
 
     def _hide_error(self):
+        """poistaa virheilmoituksen
+        """
         self._error_label.grid_remove()
 
     def _initialize_username_field(self):
+        """luodaan käyttäjätunnukselle oma tilansa
+        """
         username_label = ttk.Label(master=self._frame, text='Username')
         self._username_text = ttk.Entry(master=self._frame)
 
@@ -44,6 +63,8 @@ class LoginView:
         self._username_text.grid(padx=10, pady=10, sticky=constants.EW)
 
     def _initialize_password_field(self):
+        """luodaan salasanalle oma tilansa
+        """
         password_label = ttk.Label(master=self._frame, text='Password')
         self._password_text = ttk.Entry(master=self._frame)
 
@@ -51,17 +72,22 @@ class LoginView:
         self._password_text.grid(padx=10, pady=10, sticky=constants.EW)
 
     def _initialize(self):
+        """luodaan koko sivu
+        """
         self._frame = ttk.Frame(master=self._root)
         self._error_variable = StringVar(self._frame)
 
-        self._error_label = ttk.Label(master=self._frame, textvariable=self._error_variable, foreground='red')
+        self._error_label = ttk.Label(master=self._frame,
+            textvariable=self._error_variable, foreground='red')
         self._error_label.grid(padx=10, pady=10)
 
         self._initialize_username_field()
         self._initialize_password_field()
 
-        login_button = ttk.Button(master=self._frame, text='Login', command=self._login_handler)
-        create_user_button = ttk.Button(master=self._frame, text="Create user", command=self._handle_show_create_user_view)
+        login_button = ttk.Button(master=self._frame, text='Login',
+            command=self._login_handler)
+        create_user_button = ttk.Button(master=self._frame,
+            text="Create user", command=self._handle_show_create_user_view)
 
         self._frame.grid_columnconfigure(0, weight=1, minsize=500)
 
