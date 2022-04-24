@@ -9,3 +9,6 @@
 - tunnuksen ollessa virheellinen tai olemassaoleva, sovellus ilmoittaa virheestä
 - testattiin käyttäjän toimenpiteitä
 - aloitin item repon tekemisen
+# viikko 5
+- käyttäjä pystyy lisäämään tuotteita, mutta nämä eivät vielä näy
+- käyttäjä pystyy poistamaan tuotteita, jotka eivät vielä näy
