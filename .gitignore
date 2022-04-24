@@ -1,4 +1,12 @@
-.pytest_cache
-.__pycace__
+.vscode
+.DS_Store
 .coverage
+.pytest_cache
 htmlcov
+__pycache__
+
+# data files
+data/database.sqlite
+data/todos.csv
+data/test-database.sqlite
+data/test-todos.csv
