@@ -1,6 +1,7 @@
 """servicelle
 """
 from entities.user import User
+from entities.item import Item
 from repositories.item_repository import( item_repository as default_item_repository)
 from repositories.user_repository import (user_repository as default_user_repository)
 
@@ -15,51 +16,87 @@ class UsernameExistsError(Exception):
     pass
 
 class Service:
-    """luokka
-    """
-    def __init__(self, item_repository=default_item_repository,
-        user_repository=default_user_repository):
-        """alustaa tarvittavat
+    """Luokka joka vastaa sovelluslogiikasta."""
+
+    def __init__(self, default_user_repository=default_user_repository,
+     default_item_repository=default_item_repository):
+        """Luokan konstruktori
         """
+
         self._user = None
-        self._todo_repository = item_repository
-        self._user_repository = user_repository
+        self._user_repository = default_user_repository
+        self._item_repository = default_item_repository
+
+    def create_user(self, username, password):
+        """luo uuden käyttäjän ja kirjaa sen samalla sisään
+        """
+
+        existing_user = self._user_repository.find_by_username(username)
+
+        if existing_user is not None:
+            raise UsernameExistsError(f'Username {username} is already in use')
+
+        user = self._user_repository.create_user(User(username, password))
+
+        self._user = user
+
+        return user
 
     def login(self, username, password):
-        """kirjautumissivu
+        """kirjaa käyttäjän sisään.
         """
+
         user = self._user_repository.find_by_username(username)
-        if not user or user.password != password:
-            raise InvalidCredentialsError(
-                'Username or password is incorrect. Please try again or create and account.'
-            )
+
+        if user is None or user.password != password:
+            raise InvalidCredentialsError("Invalid username or password")
+
         self._user = user
+
         return user
-
-    def get_current_user(self):
-        """palauttaa krijautuneen käyttäjän
-        """
-        return self._user
-
-    def get_users(self):
-        """palauttaa kaikki käyttäjät
-        """
-        return self._user_repository.find_all()
 
     def logout(self):
-        """Kirjaa käyttäjän ulos
-        """
+        """kirjaa nykyisen käyttäjän ulos."""
+
         self._user = None
 
-    def create_user(self, username, password, login=True):
-        """luo käyttäjän
+    def get_current_user(self):
+        """palauttaa kirjautuneen käyttäjän.
         """
-        username_reserved = self._user_repository.find_by_username(username)
-        if username_reserved:
-            raise UsernameExistsError(f'Username {username} already exists')
-        user = self._user_repository.create(User(username, password))
-        if login:
-            self._user = user
-        return user
+
+        return self._user
+
+    def add_item(self, item):
+        """lisää tuotteita"""
+        user = self.get_current_user()
+        item = Item(item)
+
+        self._item_repository.add_item(item, user)
+        return item
+
+    def delete_item(self, item):
+        """poistaa tuotteita"""
+        user = self.get_current_user()
+        self._item_repository.delete_items(item, user)
+
+    def find_items(self):
+        """etsii tuotteita"""
+        user = self.get_current_user()
+
+        items = self._item_repository.find_by_user(user)
+
+        result = []
+        for item in items:
+            result.append(item)
+
+        result.sort()
+        return result
+
+    def delete_everything(self):
+        """Luokan metodi, joka tyhjentää koko tietokannan."""
+
+        self._user_repository.delete_all()
+        self._item_repository.delete_all()
+
 
 service = Service()

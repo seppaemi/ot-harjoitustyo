@@ -10,5 +10,8 @@ try:
 except FileNotFoundError:
     pass
 
+ITEMS_FILENAME = os.getenv('ITEMS_FILENAME') or 'items.csv'
+ITEMS_FILE_PATH = os.path.join(dirname, '..', 'data', ITEMS_FILENAME)
+
 DATABASE_FILENAME = os.getenv('DATABASE_FILENAME') or 'database.sqlite'
 DATABASE_FILE_PATH = os.path.join(dirname, '..', 'data', DATABASE_FILENAME)

@@ -1,64 +1,59 @@
-"""repo käyttäjille
-"""
+"""user repo"""
 from entities.user import User
 from database_connection import get_db_connection
 
+
 def get_user_by_row(row):
-    """palauttaa käyttäjän
-    """
+    """hakee käyttäjän"""
     return User(row['username'], row['password']) if row else None
 
 
 class UserRepository:
-    """Käyttäjiin liittyvistä tietokantaoperaatioista vastaava luokka.
-    """
+    """Luokka joka vastaa käyttäjiin liittyvistä tietokantaoperaatioista."""
+
     def __init__(self, connection):
-        """luokan konstruktori
+        """Luokan konstruktori
         """
+
         self._connection = connection
 
-    def find_all(self):
-        """etsii ja palauttaa kaikki käyttäjät
+    def create_user(self, user):
+        """tallentaa uuden käyttäjän tietokantaan.
         """
-        cursor = self._connection.cursor()
-        cursor.execute('select * from users')
-        rows = cursor.fetchall()
-        return list(map(get_user_by_row, rows))
 
-    def find_by_username(self, username):
-        """etsii ja palauttaa käyttäjän, tunnuksen perusteella
-        """
         cursor = self._connection.cursor()
-        cursor.execute(
-            'select * from users where username = ?',
-            (username,)
-        )
-        row = cursor.fetchone()
-        return get_user_by_row(row)
 
-    def create(self, user):
-        """tallentaa käyttäjän tietokentaan
-        """
-        cursor = self._connection.cursor()
-        cursor.execute(
-            'insert into users (username, password) values (?, ?)',
-            (user.username, user.password)
-        )
+        cursor.execute('INSERT INTO users (username, password) values (?, ?)',
+                       [user.username, user.password])
+
         self._connection.commit()
+        cursor.close()
+
         return user
 
-    def delete_user(self, username):
-        """poistaa tietyn käyttäjän
+    def find_by_username(self, username):
+        """palauttaa käyttäjän käyttäjätunnuksen
+           perusteella
         """
+
         cursor = self._connection.cursor()
-        cursor.execute("DELETE FROM users WHERE username= ?", [username])
-        return "User deleted"
+
+        cursor.execute('SELECT * FROM users WHERE username = ?', [username])
+
+        row = cursor.fetchone()
+        cursor.close()
+
+        return get_user_by_row(row)
 
     def delete_all(self):
-        """poistaa kaiken
-        """
+        """poistaa kaikki käyttäjät"""
+
         cursor = self._connection.cursor()
-        cursor.execute("DELETE FROM users")
+
+        cursor.execute('DELETE FROM users')
+
         self._connection.commit()
+        cursor.close()
+
 
 user_repository = UserRepository(get_db_connection())

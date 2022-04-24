@@ -1,7 +1,7 @@
 """tässä tapahtuu kaikkien muiden sivun luomisten yhdistys
 """
 from ui.login import LoginView
-from ui.shoppinglist import ShoppinglistView
+from ui.shoppinglist import ItemsView
 from ui.new_user import CreateUserView
 
 
@@ -21,6 +21,7 @@ class UI:
 
     def _hide_current_view(self):
         """sulkee tarvittavan sivun
+
         """
         if self.current_view:
             self.current_view.destroy()
@@ -37,7 +38,7 @@ class UI:
     def _show_items_view(self):
         """näyttää"""
         self._hide_current_view()
-        self.current_view = ShoppinglistView(self.root, self._show_login_view)
+        self.current_view = ItemsView(self.root, self._show_login_view)
         self.current_view.pack()
 
     def _show_create_user_view(self):
