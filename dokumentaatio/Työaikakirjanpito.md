@@ -10,4 +10,5 @@
 |12.4.2022|6,0|tein arkkitehtuurin, korjasin pylintin virheitä, testasin, ja tarkastin että kaikki on valmista palautukseen|
 |22.4.2022|3,0| aloitin item repoa|
 |24.4.2022|8,5|tein item repon, ydistin sovelluslogiikan, tuotteita pystyy lisäämään mutta jostain syystä ne eivät vielä näy (ensi viikon ongelmaksi jää), testasin|
-|yhteensä|48,5||
+|26.4.2022|2,0|tein sekvenssikaavion ja releasen|
+|yhteensä|50,5||
