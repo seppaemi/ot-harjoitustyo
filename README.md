@@ -8,7 +8,7 @@ Sovelluksen avulla käyttjä voi tallettaa tietoon, mitä hänen tulee ostaa seu
 
 [changelog](https://github.com/seppaemi/ot-harjoitustyo/blob/master/dokumentaatio/changelog.md)
 
-[arkkitehtuuri] (https://github.com/seppaemi/ot-harjoitustyo/blob/master/dokumentaatio/Arkkitehtuuri.md)
+[arkkitehtuuri](https://github.com/seppaemi/ot-harjoitustyo/blob/master/dokumentaatio/Arkkitehtuuri.md)
 
 ## Asennus
 
