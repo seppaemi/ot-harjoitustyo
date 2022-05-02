@@ -1,183 +1,95 @@
 
 """kauppalistaikkuna
 """
+import tkinter as tk
 from tkinter import ttk, constants
-from services.service import service
+from services.service import Service
 
-class ItemsView:
-    """luokka joka vastaa kauppalistasta"""
-    def __init__(self, root, handle_logout):
-        """luokan konstruktorit"""
+class ShoppinglistView:
+    def __init__(self, root, user, handle_login_view, handle_add_item_view):
+        """Käyttäjänäkymästä vastaava käyttöliittymäluokka
+        """
         self._root = root
-        self._handle_logout = handle_logout
         self._frame = None
-        self._create_item_entry = None
-        self._frame_for_item_list = None
-        self._item_list_view = None
-
+        self.user = user
+        self._service = Service()
+        self._handle_login_view = handle_login_view
+        self.handle_add_item_view = handle_add_item_view
         self._initialize()
 
     def pack(self):
-        """luokan tausta"""
+        """Pakkaa käyttöliittymän """
         self._frame.pack(fill=constants.X)
 
     def destroy(self):
-        """sulkee ikkunan"""
+        """Tuhoaa tämänhetkisen näkymän"""
         self._frame.destroy()
 
-    def _logout_handler(self):
-        """vastaa sisäänkirjauksesta"""
-        service.logout()
-        self._handle_logout()
+    def handle_logout(self):
+        """Kirjaa käyttäjän ulos järjestelmästä"""
+        message_box = tk.messagebox.askquestion('Info', f'Log out user {self.user.username}?')
 
-    def _handle_set_item_got(self, item_id):
-        """merkkaa tuotteen hankituksi"""
-        service.delete_item(item_id)
-        self._initialize_item_list()
+        if message_box == 'yes':
+            self._handle_login_view()
+        else:
+            return
 
-    def _initialize_item_list(self):
-        """auttaa listan kanssa"""
-        if self._item_list_view:
-            self._item_list_view.destroy()
+    def handle_move_to_add_view(self, user):
+        """Siirtää näkymän AddItemViewiin kun nappia painetaan"""
+        self.handle_add_item_view(user)
 
-        items = service.find_items()
+    def insert_to_tree(self):
+        """Luo näkymän käyttäjien lisäämille tuotteulle"""
+        items = self._service.get_items_by_user(self.user)
 
-        self._item_list_view = ItemListView(
-            self._frame_for_item_list,
-            items,
-            self._handle_set_item_got
-        )
+        self.numberOfItems = 1
+        self.iid = 0
 
-        self._item_list_view.pack()
+        for x in items:
+            self.tree.insert(
+                '',
+                'end',
+                iid=self.iid,
+                text=self.numberOfItems,
+                values=(x.category, x.amount, x.item)
+            )
 
-    def _initialize_header(self):
-        """nappeja sun muita kivoja
-        """
-        user_label = ttk.Label(
+            self.iid = self.iid + 1
+            self.numberOfItems = self.numberOfItems + 1
+
+    def _initialize(self):
+        """Initialisoi näkymän"""
+        self._frame = ttk.Frame(master=self._root)
+        style = ttk.Style()
+
+        style.configure('Treeview', rowheight=40)
+
+        add_item_button = ttk.Button(
             master=self._frame,
-            text='Shoppinglist'
+            text="Add item",
+            command=lambda: self.handle_add_item_view(self.user)
         )
-
         logout_button = ttk.Button(
             master=self._frame,
-            text='Logout',
-            command=self._logout_handler
+            text="Logout",
+            command=lambda: self.handle_logout()
         )
+        data_label = ttk.Label(master=self._frame, text="Saved items", font=(None, 20))
 
-        user_label.grid(row=0, column=0, padx=10, pady=10, sticky=constants.W)
+        add_item_button.grid(row=0, column=0, sticky=constants.W, padx=5, pady=5)
+        logout_button.grid(row=0, column=1, sticky=constants.E, padx=5, pady=5)
+        data_label.grid(row=1, column=0, sticky=(constants.E, constants.W), pady=20)
 
-        logout_button.grid(
-            row=0,
-            column=1,
-            padx=10,
-            pady=10,
-            sticky=constants.EW
-        )
+        self.tree = ttk.Treeview(self._frame, columns=('Site', 'Username', 'Password'))
+        self.tree.heading('#0', text='id')
+        self.tree.heading('#1', text='Amount')
+        self.tree.heading('#2', text='Category')
+        self.tree.heading('#3', text="Item")
 
-    def _handle_create_item(self):
-        """nappeja tuotteen luomiseen"""
+        self.tree.column('#0', width=30)
 
-        item_cont = str(self._create_item_entry.get())
+        self.tree.grid(row=2, columnspan=4, sticky='nsew')
 
-        if item_cont:
-            service.add_item(item_cont)
-            self._initialize_item_list()
-            self._create_item_entry.delete(0, constants.END)
+        self._frame.columnconfigure(0, weight=1, minsize=400)
 
-    def _initialize_footer(self):
-        """nappeja tuotteen lisäämiseen
-        """
-        self._create_item_entry = ttk.Entry(master=self._frame)
-
-        _create_item_button = ttk.Button(
-            master=self._frame,
-            text='Add item',
-            command=self._handle_create_item
-        )
-
-        self._create_item_entry.grid(
-            row=2,
-            column=0,
-            padx=10,
-            pady=10,
-            sticky=constants.EW
-        )
-
-        _create_item_button.grid(
-            row=2,
-            column=1,
-            padx=10,
-            pady=10,
-            sticky=constants.EW
-        )
-
-    def _initialize(self):
-        """vastaa ulkomuodosta
-        """
-        self._frame = ttk.Frame(master=self._root)
-        self._frame_for_item_list = ttk.Frame(master=self._frame)
-
-        self._initialize_header()
-        self._initialize_item_list()
-        self._initialize_footer()
-
-        self._frame_for_item_list.grid(
-            row=1,
-            column=0,
-            columnspan=2,
-            sticky=constants.EW
-        )
-
-        self._frame.grid_columnconfigure(0, weight=1, minsize=500)
-        self._frame.grid_columnconfigure(1, weight=0)
-
-class ItemListView:
-    """luokaa tuotelistalle"""
-    def __init__(self, root, items, handle_set_item_got):
-        """luokan konstruktorit"""
-        self._root = root
-        self._items = items
-        self._handle_set_item_got = handle_set_item_got
-        self._frame = None
-
-        self._initialize()
-
-    def pack(self):
-        """taustaa"""
-        self._frame.pack(fill=constants.X)
-
-    def destroy(self):
-        """sulkee ikkunan"""
-        self._frame.destroy()
-
-    def _initialize_item(self, item):
-        """tuotenappeja"""
-        item_frame = ttk.Frame(master=self._frame)
-        label = ttk.Label(master=item_frame)
-
-        set_done_button = ttk.Button(
-            master=item_frame,
-            text='got it',
-            command=lambda: self._handle_set_item_got(item)
-        )
-
-        label.grid(row=0, column=0, padx=10, pady=10, sticky=constants.W)
-
-        set_done_button.grid(
-            row=0,
-            column=1,
-            padx=10,
-            pady=10,
-            sticky=constants.EW
-        )
-
-        item_frame.grid_columnconfigure(0, weight=1)
-        item_frame.pack(fill=constants.X)
-
-    def _initialize(self):
-        """taustajuttuja"""
-        self._frame = ttk.Frame(master=self._root)
-
-        for item in self._items:
-            self._initialize_item(item)
-    
+        self.insert_to_tree()

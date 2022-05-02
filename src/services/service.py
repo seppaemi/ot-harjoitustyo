@@ -26,77 +26,81 @@ class Service:
         self._user = None
         self._user_repository = default_user_repository
         self._item_repository = default_item_repository
-
-    def create_user(self, username, password):
-        """luo uuden käyttäjän ja kirjaa sen samalla sisään
+    def login_user(self, user):
+        """Kirjaa käyttäjän järjestelmään
+        Args:
+            user: User-olio, jolla käyttäjä kirjataan sisään
+        Returns
+            Palauttaa User-olion, joka kirjataan järjestelmään
         """
+        self.user = self._user_repository.login_user(user)
 
-        existing_user = self._user_repository.find_by_username(username)
+        return self.user
 
-        if existing_user is not None:
-            raise UsernameExistsError(f'Username {username} is already in use')
-
-        user = self._user_repository.create_user(User(username, password))
-
-        self._user = user
-
-        return user
-
-    def login(self, username, password):
-        """kirjaa käyttäjän sisään.
+    def get_user(self, user):
+        """Hakee halutun käyttäjän tietokannasta
+        Args:
+            user: User-olio, joka etsitään tietokannasta
+        Returns:
+            Palauttaa User-olion, jos käyttäjä löytyy tietokannasta
+            tai None, jos käyttäjää ei löydy
         """
+        user_by_username = self._user_repository.get_single_user(user)
 
-        user = self._user_repository.find_by_username(username)
+        return user_by_username
 
-        if user is None or user.password != password:
-            raise InvalidCredentialsError("Invalid username or password")
-
-        self._user = user
-
-        return user
-
-    def logout(self):
-        """kirjaa nykyisen käyttäjän ulos."""
-
-        self._user = None
-
-    def get_current_user(self):
-        """palauttaa kirjautuneen käyttäjän.
+    def create_user(self, user):
+        """Luo uuden käyttäjän järjestelmään
+        Args:
+            user: User-olio joka lisätään järjestelmään
+        Returns:
+            Palauttaa lisätyn User-olion
+            Jos käyttäjä löytyy jo järjestelmästä tai User-olio on puutteellinen
+            palautetaan None
         """
+        if self.get_user(user):
+            return None
+        if not user.username or not user.password:
+            return None
+        if len(user.username) > 10:
+            return None
+        if len(user.password) > 20:
+            return None
 
-        return self._user
+        new_user = self._user_repository.create_user(user)
 
-    def add_item(self, item):
-        """lisää tuotteita"""
-        user = self.get_current_user()
-        item = Item(item)
+        return new_user
 
-        self._item_repository.add_item(item, user)
-        return item
+    
+    def get_items_by_user(self, user):
+        """Hakee tietyn käyttäjän järjestelmään lisäämät tuotteet
+        Args:
+            user: User-olio, jonka lisäämät tuotteet halutaan hakea
+        Returns:
+            Halutun käyttäjän lisäämät tuotteet listamuodossa
+        """
+        items = self._item_repository.get_all_items_by_user(user)
+
+        return items
+
+    def add_new_items(self, item):
+        """Lisää uuden salasanan järjestelmään
+        Args:
+            item: Item-olio, jonka käyttäjä haluaa lisätä järjestelmään
+        Returns
+            Palauttaa lisätyn Item-olion
+        """
+        added_item = self._item_repository.create_item(item)
+
+        return added_item
 
     def delete_item(self, item):
         """poistaa tuotteita"""
-        user = self.get_current_user()
-        self._item_repository.delete_items(item, user)
-
-    def find_items(self):
-        """etsii tuotteita"""
-        user = self.get_current_user()
-
-        items = self._item_repository.find_by_user(user)
-
-        result = []
-        for item in items:
-            result.append(item)
-
-        result.sort()
-        return result
+        pass
 
     def delete_everything(self):
         """Luokan metodi, joka tyhjentää koko tietokannan."""
 
         self._user_repository.delete_all()
-        self._item_repository.delete_all()
+        self._item_repository.delete_all_items()
 
-
-service = Service()

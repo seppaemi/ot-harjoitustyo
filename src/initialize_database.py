@@ -32,6 +32,8 @@ def create_tables(connection):
         CREATE TABLE Items (
             id INTEGER PRIMARY KEY,
             item TEXT,
+            category TEXT,
+            amount TEXT,
             user_id INTEGER REFERENCES Users);
     ''')
 

@@ -1,99 +1,130 @@
-"""luodaan ikkuna käyttäjän luomiselle
-"""
-from tkinter import ttk, StringVar, constants
-from services.service import service, UsernameExistsError
+from tkinter import Tk, ttk, constants, messagebox
+from database_connection import get_db_connection
+from services.service import Service
+from entities.user import User
 
-class CreateUserView:
-    """luokka ikkunna luomiselle
-    """
-    def __init__(self, root, handle_create_user, handle_show_login_view):
-        """alustaa kaiken tarvittavan
+class RegisterView:
+    def __init__(self, root, handle_login_view):
+        """Rekisteröitymisnäkymästä vastaava käyttöliittymäluokka
         """
         self._root = root
-        self._handle_create_user = handle_create_user
-        self._handle_show_login_view = handle_show_login_view
         self._frame = None
-        self._username_text = None
-        self._password_text = None
-        self._error_variable = None
-        self._error_label = None
         self._initialize()
+        self._handle_login_view = handle_login_view
+        self._service = Service()
 
     def pack(self):
-        """luo ikkunan
-        """
+        """Pakkaa käyttöliittymän komponentit"""
         self._frame.pack(fill=constants.X)
 
     def destroy(self):
-        """sulkee ikkunan
-        """
+        """Tuhoaa tämänhetkisen näkymän"""
         self._frame.destroy()
 
-    def _create_user_handler(self):
-        """kirjoitusmahdollisuus tunnukselle ja salasanalle
+    def _handle_register(self, username, password):
+        """Huolehtii uuden käyttäjän rekisteröinnistä, heittää virheen virheellisellä syötteellä
         """
-        username = self._username_text.get()
-        password = self._password_text.get()
+        if len(username) > 10:
+            return messagebox.showerror('Error', 'Username must be under 10 characters long')
 
-        if len(username) == 0 or len(password) == 0:
-            self._show_error('Username and password is required')
-            return
-        try:
-            service.create_user(username, password)
-            self._handle_create_user()
-        except UsernameExistsError:
-            self._show_error(f'Username {username} already exists')
+        if len(password) > 20:
+            return messagebox.showerror('Error', 'Password must be under 20 characters long')
 
-    def _show_error(self, message):
-        """näyttää virheilmoituksen tarvittaessa
-        """
-        self._error_variable.set(message)
-        self._error_label.grid()
+        user = self._service.create_user(User(username, password))
 
-    def _hide_error(self):
-        """poistaa virheilmoituksen tarvittaessa
-        """
-        self._error_label.grid_remove()
+        if not username or not password:
+            return messagebox.showerror('Error', 'Fill all fields')
 
-    def _initialize_username_field(self):
-        """luo tunnukselle kentän
-        """
-        username_label = ttk.Label(master=self._frame, text='Username')
-        self._username_text = ttk.Entry(master=self._frame)
+        if not user:
+            return messagebox.showerror('Error', 'User already exists')
 
-        username_label.grid(padx=10, pady=10, sticky=constants.W)
-        self._username_text.grid(padx=10, pady=10, sticky=constants.EW)
 
-    def _initialize_password_field(self):
-        """luo salasanalle kentän
-        """
-        password_label = ttk.Label(master=self._frame, text='Password')
-        self._password_text = ttk.Entry(master=self._frame)
+        self._handle_login_view()
+        return user
 
-        password_label.grid(padx=10, pady=10, sticky=constants.W)
-        self._password_text.grid(padx=10, pady=10, sticky=constants.EW)
+    def _handle_cancel(self):
+        """Siirtää näkymän LoginViewiin kun nappia painetaan"""
+        self._handle_login_view()
 
     def _initialize(self):
-        """luodaan koko sivu"""
+        """Initialisoi näkymän"""
         self._frame = ttk.Frame(master=self._root)
 
-        self._error_variable = StringVar(self._frame)
-        self._error_label = ttk.Label(master=self._frame,
-            textvariable=self._error_variable, foreground='red')
+        heading_label = ttk.Label(
+            master=self._frame, text="Register", font=(None, 20)
+        )
+        username_label = ttk.Label(
+            master=self._frame, text="username", font=(None, 10)
+        )
+        username_entry = ttk.Entry(
+            master=self._frame
+        )
+        password_label = ttk.Label(
+            master=self._frame, text="password", font=(None, 10)
+        )
+        password_entry = ttk.Entry(
+            master=self._frame, show="*"
+        )
+        # add user to database and return to login screen
+        register_button = ttk.Button(
+            master=self._frame,
+            text="Register",
+            command=lambda: self._handle_register(
+                username_entry.get(), password_entry.get()
+            )
+        )
+        # return to login screen
+        cancel_button = ttk.Button(
+            master=self._frame,
+            text="Cancel",
+            command=lambda: self._handle_cancel()
+        )
 
-        self._error_label.grid(padx=10, pady=10)
+        heading_label.grid(
+            row=0,
+            column=0,
+            columnspan=2,
+            sticky=constants.W,
+            padx=5,
+            pady=5
+        )
+        username_label.grid(
+            row=1, column=0
+        )
+        username_entry.grid(
+            row=1,
+            column=1,
+            sticky=(constants.E, constants.W),
+            padx=2,
+            pady=2,
+            ipady=5
+        )
+        password_label.grid(
+            row=2, column=0
+        )
+        password_entry.grid(
+            row=2,
+            column=1,
+            sticky=(constants.E, constants.W),
+            padx=2,
+            pady=2,
+            ipady=5
+        )
+        register_button.grid(
+            row=3,
+            column=0,
+            sticky=constants.E,
+            padx=2,
+            pady=5,
+            ipady=5
+        )
+        cancel_button.grid(
+            row=3,
+            column=1,
+            sticky=constants.W,
+            padx=2,
+            pady=5,
+            ipady=5
+        )
 
-        self._initialize_username_field()
-        self._initialize_password_field()
-
-        create_user_button = ttk.Button(master=self._frame,
-            text='Create', command=self._create_user_handler)
-        login_button = ttk.Button(master=self._frame,
-            text='Login', command=self._handle_show_login_view)
-
-        self._frame.grid_columnconfigure(0, weight=1, minsize=500)
-
-        create_user_button.grid(padx=10, pady=10, sticky=constants.EW)
-        login_button.grid(padx=10, pady=10, sticky=constants.EW)
-
-        self._hide_error()
+        self._frame.grid_columnconfigure(1, weight=1, minsize=400)

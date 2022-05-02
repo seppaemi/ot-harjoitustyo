@@ -1,18 +1,17 @@
 """ entities luokka
 """
+
 class User:
-    """Luokka yksittäisestä käyttäjästä
-    Attributes:
-        username: käyttäjätunnis merkkijonona
-        password: salasana merkkijonona
+    """Luokka, joka kuvaa yksittäistä käyttäjää
     """
-
-    def __init__(self, username, password):
-        """Luokan konstruktori: luo käyttäjän
-        Args:
-            username: käyttäjätunnus merkkijonona
-            password: salasana merkkijonona
+    def __init__(self, username, password, user_id = None):
+        """Konstruktori, luo uuden käyttäjän
         """
-
         self.username = username
         self.password = password
+        self.user_id = user_id
+
+    def set_user_id(self, id):
+        """Mahdollistaa user_id:n asettamisen käyttäjän alustamisen jälkeen
+        """
+        self.user_id = id

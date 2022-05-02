@@ -1,97 +1,139 @@
 """ vastaa kirjautumisikkunasta
 """
-from tkinter import ttk, StringVar, constants
-from services.service import service, InvalidCredentialsError
+
+from tkinter import Tk, ttk, constants, messagebox
+from database_connection import get_db_connection
+from ui.shoppinglist import ShoppinglistView
+from entities.user import User
+from services.service import Service
 
 class LoginView:
-    """luokka ikkunalle"""
-    def __init__(self, root, handle_login, handle_show_create_user_view):
-        """alustetaan kaikki tarpeellinen
+    def __init__(self, root, handle_user_view, handle_register_view, handle_login_view):
+        """Kirjautumisnäkymästä vastaava käyttöliittymäluokka
+        
+        Args:
+            root: Juurielementti, joka hallitsee nykyistä näkymää
+            handle_user_view: UI-luokan metodi, joka siirtää näkymän UserViewiin
+            handle_register_view: UI-luokan metodi, joka siirtää näkymän RegisterViewiin
+            handle_login_view: UI-luokan metodi, joka siirtää näkymän LoginViewiin
         """
         self._root = root
-        self._handle_login = handle_login
-        self._handle_show_create_user_view = handle_show_create_user_view
         self._frame = None
-
-        self._username_text = None
-        self._password_text = None
-
-        self._error_variable = None
-        self._error_label = None
-
         self._initialize()
+        self.user = None
+        self._service = Service()
+        self._handle_user_view = handle_user_view
+        self._handle_register_view = handle_register_view
+        self._handle_login_view = handle_login_view
 
     def pack(self):
-        """luo ikkunan
-        """
+        """Pakkaa käyttöliittymän"""
         self._frame.pack(fill=constants.X)
 
     def destroy(self):
-        """sulkee ikkunan
-        """
+        """Tuhoaa tämänhetkisen näkymän"""
         self._frame.destroy()
 
-    def _login_handler(self):
-        """näihin voi kirjoittaa
+    def _handle_login(self, username, password):
+        """Kirjaa käyttäjän järjestelmään, heittää virheen virheellisillä syötteillä
+        
+        Args:
+            username: String
+            password: String 
         """
-        username = self._username_text.get()
-        password = self._password_text.get()
-        try:
-            service.login(username, password)
-            self._handle_login()
-        except InvalidCredentialsError:
-            self._show_error('Invalid username or password')
+        self.user = self._service.login_user(User(username, password))
 
-    def _show_error(self, message):
-        """luo virheilmoiuksen tarvittaessa
-        """
-        self._error_variable.set(message)
-        self._error_label.grid()
+        # if not valid credentials, reset password entry and show error
+        # else log user in
+        if not username or not password:
+            return messagebox.showerror('Error', 'Fill all needed fields')
 
-    def _hide_error(self):
-        """poistaa virheilmoituksen
-        """
-        self._error_label.grid_remove()
+        if not self.user:
+            self.password_entry.delete(0, 'end')
+            return messagebox.showerror('Error', 'Invalid username or password')
 
-    def _initialize_username_field(self):
-        """luodaan käyttäjätunnukselle oma tilansa
-        """
-        username_label = ttk.Label(master=self._frame, text='Username')
-        self._username_text = ttk.Entry(master=self._frame)
+        self._handle_user_view(self.user)
 
-        username_label.grid(padx=10, pady=10, sticky=constants.W)
-        self._username_text.grid(padx=10, pady=10, sticky=constants.EW)
-
-    def _initialize_password_field(self):
-        """luodaan salasanalle oma tilansa
-        """
-        password_label = ttk.Label(master=self._frame, text='Password')
-        self._password_text = ttk.Entry(master=self._frame)
-
-        password_label.grid(padx=10, pady=10, sticky=constants.W)
-        self._password_text.grid(padx=10, pady=10, sticky=constants.EW)
+    def _handle_register_button(self):
+        """Siirtää näkymän RegisterViewiin kun nappia painetaan"""
+        self._handle_register_view()
 
     def _initialize(self):
-        """luodaan koko sivu
-        """
+        """Initialisoi näkymän"""
         self._frame = ttk.Frame(master=self._root)
-        self._error_variable = StringVar(self._frame)
 
-        self._error_label = ttk.Label(master=self._frame,
-            textvariable=self._error_variable, foreground='red')
-        self._error_label.grid(padx=10, pady=10)
+        heading_label = ttk.Label(
+            master=self._frame, text="Welcome, please log in or register", font=(None, 20)
+        )
+        username_label = ttk.Label(
+            master=self._frame, text="username", font=(None, 10)
+        )
+        self.username_entry = ttk.Entry(
+            master=self._frame
+        )
+        password_label = ttk.Label(
+            master=self._frame, text="password", font=(None, 10)
+        )
+        self.password_entry = ttk.Entry(
+            master=self._frame, show="*"
+        )
+        login_button = ttk.Button(
+            master=self._frame,
+            text="Login",
+            command=lambda: self._handle_login(
+                self.username_entry.get(), self.password_entry.get()
+            )
+        )
+        register_button = ttk.Button(
+            master=self._frame,
+            text="Register",
+            command=lambda: self._handle_register_button()
+        )
 
-        self._initialize_username_field()
-        self._initialize_password_field()
+        heading_label.grid(
+            row=0,
+            column=0,
+            columnspan=2,
+            sticky=constants.W,
+            padx=5,
+            pady=5
+        )
 
-        login_button = ttk.Button(master=self._frame, text='Login',
-            command=self._login_handler)
-        create_user_button = ttk.Button(master=self._frame,
-            text="Create user", command=self._handle_show_create_user_view)
+        username_label.grid(row=1, column=0)
+        self.username_entry.grid(
+            row=1,
+            column=1,
+            sticky=(constants.E, constants.W),
+            padx=2,
+            pady=2,
+            ipady=5
+        )
 
-        self._frame.grid_columnconfigure(0, weight=1, minsize=500)
+        password_label.grid(row=2, column=0)
+        self.password_entry.grid(
+            row=2,
+            column=1,
+            sticky=(constants.E, constants.W),
+            padx=2,
+            pady=2,
+            ipady=5
+        )
 
-        login_button.grid(padx=10, pady=10, sticky=constants.EW)
-        create_user_button.grid(padx=10, pady=10, sticky=constants.EW)
+        login_button.grid(
+            row=3,
+            column=0,
+            sticky=constants.E,
+            padx=2,
+            pady=5,
+            ipady=5
+        )
+        register_button.grid(
+            row=3,
+            column=1,
+            sticky=constants.W,
+            padx=2,
+            pady=5,
+            ipady=5
+        )
 
-        self._hide_error()
+        self._frame.grid_columnconfigure(1, weight=1, minsize=400)

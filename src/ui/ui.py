@@ -1,49 +1,69 @@
 """tässä tapahtuu kaikkien muiden sivun luomisten yhdistys
 """
 from ui.login import LoginView
-from ui.shoppinglist import ItemsView
-from ui.new_user import CreateUserView
-
+from ui.shoppinglist import ShoppinglistView
+from ui.new_user import RegisterView
+from ui.add_item_view import AddItemView
 
 class UI:
-    """luokka UI:lle
-    """
     def __init__(self, root):
-        """alustaa tarvittavat
+        """Eri käyttöliittymien hallinnasta vastaava luokka
+
         """
-        self.root = root
-        self.current_view = None
+        self._root = root
+        self._current_view = None
 
     def start(self):
-        """näyttää tyjän aloitus-näytön
-        """
+        """Suoritetaan kun sovellus käynnistetään, käyttäjälle näytetään LoginView"""
         self._show_login_view()
 
     def _hide_current_view(self):
-        """sulkee tarvittavan sivun
+        """Poistaa nykyisen näkymän näkyviltä"""
+        if self._current_view:
+            self._current_view.destroy()
+        self._current_view = None
 
-        """
-        if self.current_view:
-            self.current_view.destroy()
-        self.current_view = None
+    def handle_login_view(self):
+        """Siirtää näkymän LoginViewiin"""
+        self._show_login_view()
 
     def _show_login_view(self):
-        """näyttää kirjautumissivun
-        """
+        """LoginViewin näyttämisestä vastaava metodi"""
         self._hide_current_view()
-        self.current_view = LoginView(self.root,
-            self._show_items_view, self._show_create_user_view)
-        self.current_view.pack()
+        self._current_view = LoginView(
+            self._root,
+            self.handle_user_view,
+            self.handle_register_view,
+            self.handle_login_view
+        )
+        self._current_view.pack()
 
-    def _show_items_view(self):
-        """näyttää"""
-        self._hide_current_view()
-        self.current_view = ItemsView(self.root, self._show_login_view)
-        self.current_view.pack()
+    def handle_user_view(self, user):
+        """Siirtää näkymän UserViewiin"""
+        self._show_user_view(user)
 
-    def _show_create_user_view(self):
-        """näyttää luo käyttäjä-sivun
-        """
+    def _show_user_view(self, user):
+        """ShoppingListViewin näyttämisestä vastaava metodi"""
         self._hide_current_view()
-        self.current_view = CreateUserView(self.root, self._show_items_view,self._show_login_view)
-        self.current_view.pack()
+        self._current_view = ShoppinglistView(self._root, user, self.handle_login_view, self.handle_add_password_view)
+        self._current_view.pack()
+
+    def handle_register_view(self):
+        """Siirtää näkymän RegisterViewiin"""
+        self._show_register_view()
+
+    def _show_register_view(self):
+        """RegisterViewin näyttämisestä vastaava metodi"""
+        self._hide_current_view()
+        self._current_view = RegisterView(self._root, self.handle_login_view)
+        self._current_view.pack()
+
+    def handle_add_password_view(self, user):
+        """Siirtää näkymän AddItemViewiin"""
+        self._show_add_item_view(user)
+
+    def _show_add_item_view(self, user):
+        """AddItemViewin näyttämisestä vastaava metodi"""
+        self._hide_current_view()
+        self._current_view = AddItemView(self._root, self.handle_user_view, user)
+        self._current_view.pack()

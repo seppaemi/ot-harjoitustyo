@@ -1,5 +1,6 @@
 "tuotteiden tietokannat"
 from database_connection import get_db_connection
+from entities.item import Item
 
 
 def get_id_by_row(row):
@@ -23,85 +24,71 @@ class ItemRepository:
 
         self._connection = connection
 
-    def _get_user_id(self, user):
-        """palauttaa käyttäjän id:n
+    def tuple_to_item(self, item):
+        """Apufunktio, joka muuttaa tuple-syötteen Item-olioksi
+        Args:
+            item: Tuple, joka sisältää halutun Item-olion kentät
+        Returns:
+            Item-olio, joka muodostetaan parametristä item
         """
+        if not item:
+            return None
 
+        item_to_return = Item(item[1], item[2], item[3])
+        item_to_return.set_user_id(item[4])
+
+        return item_to_return
+
+    def get_all_items_by_user(self, user):
+        """Palauttaa halutun käyttäjän lisäämät tuotteet
+        Args:
+            user: User-olio, jonka lisäämät tuotteet haetaan
+        Returns:
+            Palauttaa halutun käyttäjän lisäämät tuotteet listamuodossa
+        """
         cursor = self._connection.cursor()
+        cursor.execute('SELECT * FROM Items WHERE user_id = ?', (user.user_id,))
+        Items = cursor.fetchall()
+        Items = map(self.tuple_to_item, Items)
 
-        row = cursor.execute(
-            "SELECT * FROM users WHERE username=?", [user.username]).fetchone()
+        return list(Items)
 
-        user_id = get_id_by_row(row)
 
-        cursor.close()
-
-        return user_id
-
-    def add_item(self, item, user):
-        """lisää tuotteita"""
-        user_id = self._get_user_id(user)
-
+    def get_all_items(self):
+        """Palauttaa kaikki järjestelmään lisätyt tuotteet
+        Returns:
+            Palauttaa kaikki järjestelmään lisätyt tuotteet listamuodossa
+        """
         cursor = self._connection.cursor()
+        cursor.execute('SELECT * FROM Items')
+        Items = cursor.fetchall()
+        Items = map(self.tuple_to_item, Items)
 
-        cursor.execute(
-            "INSERT INTO Items (item, user_id) VALUES (?, ?)",
-            [item.item, user_id])
+        return list(Items)
 
-        cursor.execute(
-            "SELECT * FROM Items WHERE item=? AND user_id=?",
-            (item.item, user_id))
+    def create_item(self, item):
+        """Lisää järjestelmään halutun tuotteen
+        Args:
+            item: Item-olio, joka halutaan lisätä järjestelmään
+        Returns:
+            Palauttaa luodun Item-olion
+        """
+        cursor = self._connection.cursor()
+        cursor.execute('''INSERT INTO Items (item, category, amount, user_id)
+                        VALUES (?, ?, ?, ?)''', (item.item, item.category, item.amount, item.user_id))
 
         self._connection.commit()
-        cursor.close()
-
         return item
 
-    def delete_items(self, item, user):
-        """poistaa tuotteita"""
-        user_id = self._get_user_id(user)
-
+    def delete_all_items(self):
+        """POISTAA KAIKKI JÄRJESTELMÄÄN LISÄTYT TUOTTEET"""
         cursor = self._connection.cursor()
-
-        cursor.execute(
-            "SELECT * FROM Items WHERE item=? AND user_id=?",
-            (item, user_id))
-
-        row = cursor.fetchone()
-
-        item_id = get_id_by_row(row)
-
-        cursor.execute("DELETE FROM Items WHERE id=?", [item_id])
-
+        cursor.execute('DELETE FROM Items')
         self._connection.commit()
-        cursor.close()
-
-    def find_by_user(self, user):
-        """etsii tuotteet käyttäjän perusteella"""
-        user_id = self._get_user_id(user)
-
-        cursor = self._connection.cursor()
-
-        items = cursor.execute(
-            "SELECT * FROM Items WHERE user_id=?", [user_id]).fetchall()
-
-        cursor.close()
-
-        result = []
-        for row in items:
-            result.append((get_name_by_row(row)))
-
-        return result
-
-    def delete_all(self):
-        """Luokan metodi, joka poistaa kaikki reseptit ja ainekset."""
-
-        cursor = self._connection.cursor()
-
-        cursor.execute("DELETE FROM Items")
-
-        self._connection.commit()
-        cursor.close()
+    
+    def delete_item(self, item):
+        """poistaa tuotteen"""
+        pass
 
 
 item_repository = ItemRepository(get_db_connection())
