@@ -5,6 +5,7 @@ from ui.shoppinglist import ShoppinglistView
 from ui.new_user import RegisterView
 from ui.add_item_view import AddItemView
 
+
 class UI:
     def __init__(self, root):
         """Eri käyttöliittymien hallinnasta vastaava luokka
@@ -45,7 +46,8 @@ class UI:
     def _show_user_view(self, user):
         """ShoppingListViewin näyttämisestä vastaava metodi"""
         self._hide_current_view()
-        self._current_view = ShoppinglistView(self._root, user, self.handle_login_view, self.handle_add_password_view)
+        self._current_view = ShoppinglistView(
+            self._root, user, self.handle_login_view, self.handle_add_password_view)
         self._current_view.pack()
 
     def handle_register_view(self):
@@ -65,5 +67,6 @@ class UI:
     def _show_add_item_view(self, user):
         """AddItemViewin näyttämisestä vastaava metodi"""
         self._hide_current_view()
-        self._current_view = AddItemView(self._root, self.handle_user_view, user)
+        self._current_view = AddItemView(
+            self._root, self.handle_user_view, user)
         self._current_view.pack()

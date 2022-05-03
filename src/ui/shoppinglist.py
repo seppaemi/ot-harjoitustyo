@@ -5,7 +5,9 @@ import tkinter as tk
 from tkinter import ttk, constants
 from services.service import Service
 
+
 class ShoppinglistView:
+    """kauppalistalle"""
     def __init__(self, root, user, handle_login_view, handle_add_item_view):
         """Käyttäjänäkymästä vastaava käyttöliittymäluokka
         """
@@ -27,7 +29,8 @@ class ShoppinglistView:
 
     def handle_logout(self):
         """Kirjaa käyttäjän ulos järjestelmästä"""
-        message_box = tk.messagebox.askquestion('Info', f'Log out user {self.user.username}?')
+        message_box = tk.messagebox.askquestion(
+            'Info', f'Log out user {self.user.username}?')
 
         if message_box == 'yes':
             self._handle_login_view()
@@ -42,7 +45,7 @@ class ShoppinglistView:
         """Luo näkymän käyttäjien lisäämille tuotteulle"""
         items = self._service.get_items_by_user(self.user)
 
-        self.numberOfItems = 1
+        self.number_of_items = 1
         self.iid = 0
 
         for x in items:
@@ -50,12 +53,12 @@ class ShoppinglistView:
                 '',
                 'end',
                 iid=self.iid,
-                text=self.numberOfItems,
+                text=self.number_of_items,
                 values=(x.category, x.amount, x.item)
             )
 
             self.iid = self.iid + 1
-            self.numberOfItems = self.numberOfItems + 1
+            self.number_of_items = self.number_of_items + 1
 
     def _initialize(self):
         """Initialisoi näkymän"""
@@ -74,13 +77,17 @@ class ShoppinglistView:
             text="Logout",
             command=lambda: self.handle_logout()
         )
-        data_label = ttk.Label(master=self._frame, text="Saved items", font=(None, 20))
+        data_label = ttk.Label(
+            master=self._frame, text="Saved items", font=(None, 20))
 
-        add_item_button.grid(row=0, column=0, sticky=constants.W, padx=5, pady=5)
+        add_item_button.grid(
+            row=0, column=0, sticky=constants.W, padx=5, pady=5)
         logout_button.grid(row=0, column=1, sticky=constants.E, padx=5, pady=5)
-        data_label.grid(row=1, column=0, sticky=(constants.E, constants.W), pady=20)
+        data_label.grid(row=1, column=0, sticky=(
+            constants.E, constants.W), pady=20)
 
-        self.tree = ttk.Treeview(self._frame, columns=('Site', 'Username', 'Password'))
+        self.tree = ttk.Treeview(self._frame, columns=(
+            'Site', 'Username', 'Password'))
         self.tree.heading('#0', text='id')
         self.tree.heading('#1', text='Amount')
         self.tree.heading('#2', text='Category')

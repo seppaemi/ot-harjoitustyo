@@ -2,6 +2,7 @@
 """
 from initialize_database import initialize_database
 
+
 def build():
     """tämä buildaa"""
     initialize_database()
@@ -9,4 +10,3 @@ def build():
 
 if __name__ == '__main__':
     build()
-    

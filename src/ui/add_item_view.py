@@ -1,9 +1,12 @@
-from tkinter import ttk, constants, messagebox
+"""lisätän tuotteita"""
+from tkinter import Tk, ttk, constants, messagebox
 from services.service import Service
 from entities.item import Item
 
+
 class AddItemView:
     """Salasanojen lisäyksestä vastaava käyttöliittymäluokka"""
+
     def __init__(self, root, handle_user_view, user=None):
         """Konstruktori, luo uuden salasanojen lisäyksestä vastaavan näkymän
         """
@@ -41,7 +44,7 @@ class AddItemView:
         self.category_entry.delete(0, "end")
         self.amount_entry.delete(0, "end")
         self.item_entry.delete(0, "end")
-        
+
         return result
 
     def _initialize(self):
@@ -85,7 +88,7 @@ class AddItemView:
         )
 
         heading_label.grid(row=0, column=0, columnspan=2,
-            sticky=constants.W, padx=5, pady=5)
+                           sticky=constants.W, padx=5, pady=5)
 
         site_label.grid(row=1, column=0)
         self.category_entry.grid(

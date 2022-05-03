@@ -1,9 +1,11 @@
-from tkinter import Tk, ttk, constants, messagebox
-from database_connection import get_db_connection
+"""uuden jäsenne luomiselle"""
+from tkinter import ttk, constants, messagebox
 from services.service import Service
 from entities.user import User
 
+
 class RegisterView:
+    """rekisteröinti ikkuna"""
     def __init__(self, root, handle_login_view):
         """Rekisteröitymisnäkymästä vastaava käyttöliittymäluokka
         """
@@ -37,7 +39,6 @@ class RegisterView:
 
         if not user:
             return messagebox.showerror('Error', 'User already exists')
-
 
         self._handle_login_view()
         return user

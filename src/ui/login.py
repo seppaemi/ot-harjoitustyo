@@ -1,16 +1,17 @@
 """ vastaa kirjautumisikkunasta
 """
-
-from tkinter import Tk, ttk, constants, messagebox
-from database_connection import get_db_connection
-from ui.shoppinglist import ShoppinglistView
+from repositories.item_repository import item_repository
+from repositories.user_repository import user_repository
+from tkinter import ttk, constants, messagebox
 from entities.user import User
 from services.service import Service
 
+
 class LoginView:
+    """Loginin luokka"""
     def __init__(self, root, handle_user_view, handle_register_view, handle_login_view):
         """Kirjautumisnäkymästä vastaava käyttöliittymäluokka
-        
+
         Args:
             root: Juurielementti, joka hallitsee nykyistä näkymää
             handle_user_view: UI-luokan metodi, joka siirtää näkymän UserViewiin
@@ -36,15 +37,13 @@ class LoginView:
 
     def _handle_login(self, username, password):
         """Kirjaa käyttäjän järjestelmään, heittää virheen virheellisillä syötteillä
-        
+
         Args:
             username: String
-            password: String 
+            password: String
         """
         self.user = self._service.login_user(User(username, password))
 
-        # if not valid credentials, reset password entry and show error
-        # else log user in
         if not username or not password:
             return messagebox.showerror('Error', 'Fill all needed fields')
 

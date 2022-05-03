@@ -3,6 +3,7 @@
 from tkinter import Tk
 from ui.ui import UI
 
+
 def main():
     """kaikki tarvittava sivun avaukseen
     """

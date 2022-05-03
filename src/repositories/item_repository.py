@@ -47,12 +47,12 @@ class ItemRepository:
             Palauttaa halutun käyttäjän lisäämät tuotteet listamuodossa
         """
         cursor = self._connection.cursor()
-        cursor.execute('SELECT * FROM Items WHERE user_id = ?', (user.user_id,))
-        Items = cursor.fetchall()
-        Items = map(self.tuple_to_item, Items)
+        cursor.execute('SELECT * FROM Items WHERE user_id = ?',
+                       (user.user_id,))
+        fetch_items = cursor.fetchall()
+        fetch_items = map(self.tuple_to_item, fetch_items)
 
-        return list(Items)
-
+        return list(fetch_items)
 
     def get_all_items(self):
         """Palauttaa kaikki järjestelmään lisätyt tuotteet
@@ -61,10 +61,10 @@ class ItemRepository:
         """
         cursor = self._connection.cursor()
         cursor.execute('SELECT * FROM Items')
-        Items = cursor.fetchall()
-        Items = map(self.tuple_to_item, Items)
+        fetch_items = cursor.fetchall()
+        fetch_items = map(self.tuple_to_item, fetch_items)
 
-        return list(Items)
+        return list(fetch_items)
 
     def create_item(self, item):
         """Lisää järjestelmään halutun tuotteen
@@ -75,7 +75,8 @@ class ItemRepository:
         """
         cursor = self._connection.cursor()
         cursor.execute('''INSERT INTO Items (item, category, amount, user_id)
-                        VALUES (?, ?, ?, ?)''', (item.item, item.category, item.amount, item.user_id))
+                        VALUES (?, ?, ?, ?)''', (item.item, item.category,
+                        item.amount, item.user_id))
 
         self._connection.commit()
         return item
@@ -85,7 +86,7 @@ class ItemRepository:
         cursor = self._connection.cursor()
         cursor.execute('DELETE FROM Items')
         self._connection.commit()
-    
+
     def delete_item(self, item):
         """poistaa tuotteen"""
         pass

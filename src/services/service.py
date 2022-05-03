@@ -1,31 +1,33 @@
 """servicelle
 """
-from entities.user import User
-from entities.item import Item
-from repositories.item_repository import( item_repository as default_item_repository)
-from repositories.user_repository import (user_repository as default_user_repository)
+from repositories.item_repository import (item_repository as item_repository)
+from repositories.user_repository import (user_repository as user_repository)
+
 
 class InvalidCredentialsError(Exception):
     """pass
     """
     pass
 
+
 class UsernameExistsError(Exception):
     """pass
     """
     pass
 
+
 class Service:
     """Luokka joka vastaa sovelluslogiikasta."""
 
-    def __init__(self, default_user_repository=default_user_repository,
-     default_item_repository=default_item_repository):
+    def __init__(self, user_repository=user_repository,
+                 item_repository=item_repository):
         """Luokan konstruktori
         """
 
         self._user = None
-        self._user_repository = default_user_repository
-        self._item_repository = default_item_repository
+        self._user_repository = user_repository
+        self._item_repository = item_repository
+
     def login_user(self, user):
         """Kirjaa käyttäjän järjestelmään
         Args:
@@ -71,7 +73,6 @@ class Service:
 
         return new_user
 
-    
     def get_items_by_user(self, user):
         """Hakee tietyn käyttäjän järjestelmään lisäämät tuotteet
         Args:
@@ -84,7 +85,7 @@ class Service:
         return items
 
     def add_new_items(self, item):
-        """Lisää uuden salasanan järjestelmään
+        """Lisää uuden tuotteen järjestelmään
         Args:
             item: Item-olio, jonka käyttäjä haluaa lisätä järjestelmään
         Returns
@@ -103,4 +104,3 @@ class Service:
 
         self._user_repository.delete_all()
         self._item_repository.delete_all_items()
-

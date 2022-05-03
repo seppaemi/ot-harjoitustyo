@@ -2,6 +2,7 @@
 from entities.user import User
 from database_connection import get_db_connection
 
+
 class UserRepository:
     """Luokka joka vastaa käyttäjiin liittyvistä tietokantaoperaatioista."""
 
@@ -51,10 +52,10 @@ class UserRepository:
         """
         cursor = self._connection.cursor()
         cursor.execute('SELECT * FROM Users')
-        Users = cursor.fetchall()
-        Users = map(self.tuple_to_user, Users)
+        fetch_users = cursor.fetchall()
+        fetch_users = map(self.tuple_to_user, fetch_users)
 
-        return list(Users)
+        return list(fetch_users)
 
     def create_user(self, user):
         """Luo tietokantaan uuden käyttäjän parametrin arvoilla
@@ -82,7 +83,8 @@ class UserRepository:
         """
         cursor = self._connection.cursor()
 
-        if not user.username or not user.password: return None
+        if not user.username or not user.password:
+            return None
 
         username = user.username.lower()
 
@@ -96,5 +98,6 @@ class UserRepository:
         cursor = self._connection.cursor()
         cursor.execute('DELETE FROM Users')
         self._connection.commit()
+
 
 user_repository = UserRepository(get_db_connection())
