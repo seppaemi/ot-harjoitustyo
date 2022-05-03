@@ -1,6 +1,8 @@
 # Ohjelmistotkeniikan harjoitustyö ja sen tehtäviä
 ## Kauppalistasovellus
 Sovelluksen avulla käyttjä voi tallettaa tietoon, mitä hänen tulee ostaa seuraavalla kauppareissullaan. SOvellusta voi käyttää samanaikaisesti useampi käyttäjä, joilla kaikilla on oma kauppalistansa. 
+## Releaset
+[Release 1](https://github.com/seppaemi/ot-harjoitustyo/releases/tag/viikko5)
 ## Dokumentaatio
 [vaatimusmäärittely](https://github.com/seppaemi/ot-harjoitustyo/blob/master/dokumentaatio/vaatimusm%C3%A4%C3%A4rittely.md)
 
@@ -9,6 +11,8 @@ Sovelluksen avulla käyttjä voi tallettaa tietoon, mitä hänen tulee ostaa seu
 [changelog](https://github.com/seppaemi/ot-harjoitustyo/blob/master/dokumentaatio/changelog.md)
 
 [arkkitehtuuri](https://github.com/seppaemi/ot-harjoitustyo/blob/master/dokumentaatio/Arkkitehtuuri.md)
+
+[käyttöohje](https://github.com/seppaemi/ot-harjoitustyo/blob/master/dokumentaatio/kayttoohje.md)
 
 ## Asennus
 
