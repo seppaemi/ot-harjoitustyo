@@ -11,4 +11,6 @@
 |22.4.2022|3,0| aloitin item repoa|
 |24.4.2022|8,5|tein item repon, ydistin sovelluslogiikan, tuotteita pystyy lisäämään mutta jostain syystä ne eivät vielä näy (ensi viikon ongelmaksi jää), testasin|
 |26.4.2022|2,0|tein sekvenssikaavion ja releasen|
-|yhteensä|50,5||
+|2.5.2022|7,5|laajensin ohjelmaa ja lisäsin toiminnallisuuksia|
+|3.5.2022|8,0|laajensin ja korjasin ohjelman toimintaa|
+|yhteensä|66,0 h||
