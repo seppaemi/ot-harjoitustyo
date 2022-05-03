@@ -12,3 +12,7 @@
 # viikko 5
 - käyttäjä pystyy lisäämään tuotteita, mutta nämä eivät vielä näy
 - käyttäjä pystyy poistamaan tuotteita, jotka eivät vielä näy
+# viikko 6
+- Käyttäjä ei pystykään poistamaan vielä tuotteita koska mokasin sen
+- käyttäjä pystyy kuitenkin lisäämään tuotteelle kategorian ja määrän 
+- tuotteet näkyvät käyttäjälle taas
