@@ -16,3 +16,7 @@
 - Käyttäjä ei pystykään poistamaan vielä tuotteita koska mokasin sen
 - käyttäjä pystyy kuitenkin lisäämään tuotteelle kategorian ja määrän 
 - tuotteet näkyvät käyttäjälle taas
+# viikko 7
+- Käyttäjä voi poistaa tuotteet väliaikaisesti ja tarkastella niitä taas seuraavan kirjautumisen yteydessä
+- Tuotteista tallentuu tietoa ja ne ovat treeviewissä
+- lisää virheilmoituksia
