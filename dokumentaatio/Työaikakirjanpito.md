@@ -13,4 +13,6 @@
 |26.4.2022|2,0|tein sekvenssikaavion ja releasen|
 |2.5.2022|7,5|laajensin ohjelmaa ja lisäsin toiminnallisuuksia|
 |3.5.2022|8,0|laajensin ja korjasin ohjelman toimintaa|
-|yhteensä|66,0 h||
+|8.5.2022|3,0| yritin korjata ongelmia|
+|14.5.2022|12,5| yritin edelleen korjata poistamisen ongelmaa, nyt se toimii edes jotenkin|
+|yhteensä|81,5 h||
