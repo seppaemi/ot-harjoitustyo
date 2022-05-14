@@ -9,7 +9,6 @@ from ui.add_item_view import AddItemView
 class UI:
     def __init__(self, root):
         """Eri käyttöliittymien hallinnasta vastaava luokka
-
         """
         self._root = root
         self._current_view = None
@@ -47,7 +46,7 @@ class UI:
         """ShoppingListViewin näyttämisestä vastaava metodi"""
         self._hide_current_view()
         self._current_view = ShoppinglistView(
-            self._root, user, self.handle_login_view, self.handle_add_password_view)
+            self._root, user, self.handle_login_view, self.handle_add_item_view)
         self._current_view.pack()
 
     def handle_register_view(self):
@@ -60,7 +59,7 @@ class UI:
         self._current_view = RegisterView(self._root, self.handle_login_view)
         self._current_view.pack()
 
-    def handle_add_password_view(self, user):
+    def handle_add_item_view(self, user):
         """Siirtää näkymän AddItemViewiin"""
         self._show_add_item_view(user)
 

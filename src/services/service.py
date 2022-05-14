@@ -72,6 +72,10 @@ class Service:
         new_user = self._user_repository.create_user(user)
 
         return new_user
+    def get_current_user(self):
+        """palauttaa kirjautuneen käyttäjän.
+        """
+        return self._user
 
     def get_items_by_user(self, user):
         """Hakee tietyn käyttäjän järjestelmään lisäämät tuotteet
@@ -95,9 +99,12 @@ class Service:
 
         return added_item
 
-    def delete_item(self, item):
+    def delete_item(self, item_id):
         """poistaa tuotteita"""
-        pass
+        item_id=int(item_id)
+        #user_id=int(user_id)
+        self._item_repository.delete_items(item_id)
+
 
     def delete_everything(self):
         """Luokan metodi, joka tyhjentää koko tietokannan."""

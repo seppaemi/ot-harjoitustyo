@@ -87,9 +87,11 @@ class ItemRepository:
         cursor.execute('DELETE FROM Items')
         self._connection.commit()
 
-    def delete_item(self, item):
-        """poistaa tuotteen"""
-        pass
+    def delete_items(self, item_id):
+        cursor = self._connection.cursor()
+        cursor.execute("DELETE FROM Items WHERE id=?", [item_id])
 
-
+        self._connection.commit()
+        cursor.close()
+        
 item_repository = ItemRepository(get_db_connection())

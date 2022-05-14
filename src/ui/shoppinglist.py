@@ -1,9 +1,9 @@
-
 """kauppalistaikkuna
 """
 import tkinter as tk
-from tkinter import ttk, constants
+from tkinter import ttk, constants, messagebox
 from services.service import Service
+from entities.item import Item
 
 
 class ShoppinglistView:
@@ -59,6 +59,12 @@ class ShoppinglistView:
 
             self.iid = self.iid + 1
             self.number_of_items = self.number_of_items + 1
+    
+    def remove_selected(self, item):
+        self._service.delete_item(item)
+        self.tree.delete(item)
+        self._initialize
+
 
     def _initialize(self):
         """Initialisoi näkymän"""
@@ -82,16 +88,27 @@ class ShoppinglistView:
 
         add_item_button.grid(
             row=0, column=0, sticky=constants.W, padx=5, pady=5)
+
         logout_button.grid(row=0, column=1, sticky=constants.E, padx=5, pady=5)
+
         data_label.grid(row=1, column=0, sticky=(
             constants.E, constants.W), pady=20)
+    
+        
+        remove_selected_button=ttk.Button(master=self._frame ,
+            text="remove selected item", command=lambda:
+            self.remove_selected(self.tree.selection()[0])
+            )
+
+        remove_selected_button.grid(
+            row=0, column=2, sticky=constants.W, padx=5, pady=5)
 
         self.tree = ttk.Treeview(self._frame, columns=(
-            'Site', 'Username', 'Password'))
+            'amount', 'category', 'item'))
         self.tree.heading('#0', text='id')
         self.tree.heading('#1', text='Amount')
-        self.tree.heading('#2', text='Category')
-        self.tree.heading('#3', text="Item")
+        self.tree.heading('#2', text='Item')
+        self.tree.heading('#3', text="Category")
 
         self.tree.column('#0', width=30)
 
@@ -100,3 +117,4 @@ class ShoppinglistView:
         self._frame.columnconfigure(0, weight=1, minsize=400)
 
         self.insert_to_tree()
+        
