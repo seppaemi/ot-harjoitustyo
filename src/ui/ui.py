@@ -7,8 +7,11 @@ from ui.add_item_view import AddItemView
 
 
 class UI:
+    """vastaa hallinnasta"""
     def __init__(self, root):
         """Eri käyttöliittymien hallinnasta vastaava luokka
+        Args:
+            root: Juurielementti, joka hallitsee nykyistä näkymää
         """
         self._root = root
         self._current_view = None
@@ -69,3 +72,4 @@ class UI:
         self._current_view = AddItemView(
             self._root, self.handle_user_view, user)
         self._current_view.pack()
+        

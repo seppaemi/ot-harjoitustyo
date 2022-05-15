@@ -1,5 +1,5 @@
 """lisätän tuotteita"""
-from tkinter import Tk, ttk, constants, messagebox
+from tkinter import ttk, constants, messagebox
 from services.service import Service
 from entities.item import Item
 
@@ -9,6 +9,10 @@ class AddItemView:
 
     def __init__(self, root, handle_user_view, user=None):
         """Konstruktori, luo uuden salasanojen lisäyksestä vastaavan näkymän
+        Args:
+            root: Juurielementti, joka hallitsee nykyistä näkymää
+            handle_user_view: UI-luokan metodi, joka siirtää näkymän UserViewiin
+            user: Kirjautunut käyttäjä, oletusarvoltaan None
         """
         self._root = root
         self._frame = None

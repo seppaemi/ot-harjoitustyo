@@ -1,15 +1,20 @@
 """kauppalistaikkuna
 """
 import tkinter as tk
-from tkinter import ttk, constants, messagebox
+from tkinter import ttk, constants
 from services.service import Service
-from entities.item import Item
 
 
 class ShoppinglistView:
-    """kauppalistalle"""
+    """kauppalistalle
+    """
     def __init__(self, root, user, handle_login_view, handle_add_item_view):
         """Käyttäjänäkymästä vastaava käyttöliittymäluokka
+        Args:
+            root: Juurielementti, joka hallitsee nykyistä näkymää
+            user: User-luokan olio
+            handle_login_view: UI-luokan metodi, joka siirtää näkymän LoginViewiin
+            handle_add_password_view: UI-luokan metodi, joka siirtää näkymän AddPasswordViewiin
         """
         self._root = root
         self._frame = None
@@ -48,23 +53,22 @@ class ShoppinglistView:
         self.number_of_items = 1
         self.iid = 0
 
-        for x in items:
+        for item in items:
             self.tree.insert(
                 '',
                 'end',
                 iid=self.iid,
                 text=self.number_of_items,
-                values=(x.category, x.amount, x.item)
+                values=(item.category, item.amount, item.item)
             )
 
             self.iid = self.iid + 1
             self.number_of_items = self.number_of_items + 1
-    
+
     def remove_selected(self, item):
+        """poistaa tuotteita"""
         self._service.delete_item(item)
         self.tree.delete(item)
-        self._initialize
-
 
     def _initialize(self):
         """Initialisoi näkymän"""
@@ -93,8 +97,7 @@ class ShoppinglistView:
 
         data_label.grid(row=1, column=0, sticky=(
             constants.E, constants.W), pady=20)
-    
-        
+
         remove_selected_button=ttk.Button(master=self._frame ,
             text="remove selected item", command=lambda:
             self.remove_selected(self.tree.selection()[0])

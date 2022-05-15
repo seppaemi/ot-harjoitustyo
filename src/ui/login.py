@@ -1,7 +1,5 @@
 """ vastaa kirjautumisikkunasta
 """
-from repositories.item_repository import item_repository
-from repositories.user_repository import user_repository
 from tkinter import ttk, constants, messagebox
 from entities.user import User
 from services.service import Service

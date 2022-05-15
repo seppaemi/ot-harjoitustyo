@@ -8,6 +8,9 @@ class RegisterView:
     """rekisteröinti ikkuna"""
     def __init__(self, root, handle_login_view):
         """Rekisteröitymisnäkymästä vastaava käyttöliittymäluokka
+        Args:
+            root: Juurielementti, joka hallitsee nykyistä näkymää
+            handle_login_view: UI-luokan metodi, joka siirtää näkymän LoginViewiin
         """
         self._root = root
         self._frame = None

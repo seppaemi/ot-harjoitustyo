@@ -1,7 +1,7 @@
 """servicelle
 """
-from repositories.item_repository import (item_repository as item_repository)
-from repositories.user_repository import (user_repository as user_repository)
+from repositories.item_repository import item_repository
+from repositories.user_repository import user_repository
 
 
 class InvalidCredentialsError(Exception):
@@ -100,9 +100,10 @@ class Service:
         return added_item
 
     def delete_item(self, item_id):
-        """poistaa tuotteita"""
+        """poistaa tuotteita
+        Args
+            item_id: itemin id joka halutaan poistaa"""
         item_id=int(item_id)
-        #user_id=int(user_id)
         self._item_repository.delete_items(item_id)
 
 
