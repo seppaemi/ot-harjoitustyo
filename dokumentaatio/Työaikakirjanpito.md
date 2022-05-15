@@ -15,4 +15,5 @@
 |3.5.2022|8,0|laajensin ja korjasin ohjelman toimintaa|
 |8.5.2022|3,0| yritin korjata ongelmia|
 |14.5.2022|12,5| yritin edelleen korjata poistamisen ongelmaa, nyt se toimii edes jotenkin|
-|yhteensä|81,5 h||
+|15.5.2022|6,5|hienosäädin loppupalautusta varten|
+|yhteensä|87,5 h||
