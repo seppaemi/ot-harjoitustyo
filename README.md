@@ -14,6 +14,8 @@ Sovelluksen avulla käyttjä voi tallettaa tietoon, mitä hänen tulee ostaa seu
 
 [käyttöohje](https://github.com/seppaemi/ot-harjoitustyo/blob/master/dokumentaatio/kayttoohje.md)
 
+[testausdokumentti](https://github.com/seppaemi/ot-harjoitustyo/blob/master/dokumentaatio/testausdokumentti.md)
+
 ## Asennus
 
 1. Asenna riippuvuudet komennolla:
